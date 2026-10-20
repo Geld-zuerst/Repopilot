@@ -1,11 +1,11 @@
 'use client'
 import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, MeshTransmissionMaterial, Environment, Stars, Text } from '@react-three/drei'
+import { Float, MeshTransmissionMaterial, Environment, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 
 // Floating file node
-function FileNode({ position, color, label }: { position: [number, number, number]; color: string; label: string }) {
+function FileNode({ position, color }: { position: [number, number, number]; color: string }) {
   const meshRef = useRef<THREE.Mesh>(null!)
   useFrame((state) => {
     meshRef.current.rotation.y = state.clock.elapsedTime * 0.3
@@ -105,9 +105,9 @@ function Particles() {
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
-      const r = 2.5 + Math.random() * 2
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos((Math.random() * 2) - 1)
+      const r = 2.5 + ((i * 0.618033988749895) % 1) * 2
+      const theta = i * 2.399963229728653
+      const phi = Math.acos(1 - (2 * (i + 0.5)) / count)
       pos[i * 3] = r * Math.sin(phi) * Math.cos(theta)
       pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
       pos[i * 3 + 2] = r * Math.cos(phi)
@@ -185,7 +185,7 @@ function Scene() {
 
       {filePositions.map((pos, i) => (
         <group key={i}>
-          <FileNode position={pos} color={fileColors[i % fileColors.length]} label={`file_${i}`} />
+          <FileNode position={pos} color={fileColors[i % fileColors.length]} />
           <ConnectionLine
             start={connStart}
             end={new THREE.Vector3(...pos)}
@@ -226,7 +226,7 @@ export default function RepoScene() {
           <span style={{ fontSize: '0.7rem', fontFamily: 'JetBrains Mono', color: '#22D3EE', fontWeight: 600 }}>LIVE ANALYSIS</span>
         </div>
         <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: 8, lineHeight: 1.5 }}>
-          "Where is authentication handled?"
+          &quot;Where is authentication handled?&quot;
         </p>
         <div style={{ fontSize: '0.72rem', fontFamily: 'JetBrains Mono', color: '#8B5CF6', background: 'rgba(139,92,246,0.1)', borderRadius: 6, padding: '4px 8px' }}>
           → src/auth.py:24–46

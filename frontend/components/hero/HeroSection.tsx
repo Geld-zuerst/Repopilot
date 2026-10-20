@@ -1,5 +1,4 @@
 'use client'
-import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Shield, Zap, Lock } from 'lucide-react'
 
@@ -39,9 +38,6 @@ const fadeUp = {
 }
 
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
-
   return (
     <section
       id="product"
@@ -196,7 +192,7 @@ export default function HeroSection() {
             position: 'relative',
           }}
         >
-          {mounted && <RepoScene />}
+          <RepoScene />
         </motion.div>
       </div>
 

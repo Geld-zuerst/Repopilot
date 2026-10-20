@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Menu, X, Compass, Code2, GitBranch } from 'lucide-react'
+import Link from 'next/link'
+import { Search, Menu, X, Compass } from 'lucide-react'
 
 const navLinks = [
   { label: 'Product', href: '#product' },
@@ -46,7 +47,7 @@ export default function Navbar() {
         <div className="container" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
             {/* Logo */}
-            <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
               <div style={{
                 width: 36, height: 36,
                 background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
@@ -65,7 +66,7 @@ export default function Navbar() {
               }}>
                 Repo<span style={{ background: 'linear-gradient(90deg,#8B5CF6,#22D3EE)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Pilot</span>
               </span>
-            </a>
+            </Link>
 
             {/* Center Nav */}
             <nav style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="hide-mobile">

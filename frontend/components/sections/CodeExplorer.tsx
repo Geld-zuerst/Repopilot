@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Folder, FolderOpen, FileCode, FileText, Search, GitBranch, ChevronRight, Bot, CheckCircle, ExternalLink } from 'lucide-react'
+import { Folder, FolderOpen, FileCode, Search, GitBranch, ChevronRight, Bot, CheckCircle, ExternalLink } from 'lucide-react'
 
 const fileTree = [
   { type: 'folder', name: 'src', depth: 0, open: true },
@@ -26,22 +26,22 @@ const codeLines = [
   { n: 3,  code: <><span className="syntax-keyword">from</span> <span className="syntax-import">functools</span> <span className="syntax-keyword">import</span> <span className="syntax-variable">wraps</span></> },
   { n: 4,  code: '' },
   { n: 5,  code: <><span className="syntax-comment"># JWT Configuration</span></> },
-  { n: 6,  code: <><span className="syntax-variable">SECRET_KEY</span> = <span className="syntax-string">os.environ.get('JWT_SECRET')</span></> },
-  { n: 7,  code: <><span className="syntax-variable">ALGORITHM</span> = <span className="syntax-string">'HS256'</span></> },
+  { n: 6,  code: <><span className="syntax-variable">SECRET_KEY</span> = <span className="syntax-string">os.environ.get(&apos;JWT_SECRET&apos;)</span></> },
+  { n: 7,  code: <><span className="syntax-variable">ALGORITHM</span> = <span className="syntax-string">&apos;HS256&apos;</span></> },
   { n: 8,  code: '' },
   { n: 9,  code: <><span className="syntax-keyword">def</span> <span className="syntax-function">create_token</span>(<span className="syntax-variable">user_id</span>: <span className="syntax-type">str</span>) -&gt; <span className="syntax-type">str</span>:</> },
   { n: 10, code: <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-variable">payload</span> = &#123;</> },
-  { n: 11, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-string">'sub'</span>: <span className="syntax-variable">user_id</span>,</> },
-  { n: 12, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-string">'exp'</span>: <span className="syntax-variable">datetime.utcnow</span>() + <span className="syntax-variable">timedelta</span>(<span className="syntax-variable">hours</span>=<span className="syntax-number">24</span>),</> },
+  { n: 11, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-string">&apos;sub&apos;</span>: <span className="syntax-variable">user_id</span>,</> },
+  { n: 12, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-string">&apos;exp&apos;</span>: <span className="syntax-variable">datetime.utcnow</span>() + <span className="syntax-variable">timedelta</span>(<span className="syntax-variable">hours</span>=<span className="syntax-number">24</span>),</> },
   { n: 13, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&#125;</> },
   { n: 14, code: <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-keyword">return</span> <span className="syntax-function">jwt.encode</span>(<span className="syntax-variable">payload</span>, <span className="syntax-variable">SECRET_KEY</span>)</> },
   { n: 15, code: '' },
   { n: 16, code: <><span className="syntax-keyword">def</span> <span className="syntax-function">require_auth</span>(<span className="syntax-variable">f</span>):</> },
   { n: 17, code: <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-function">@wraps</span>(<span className="syntax-variable">f</span>)</> },
   { n: 18, code: <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-keyword">def</span> <span className="syntax-function">decorated</span>(*<span className="syntax-variable">args</span>, **<span className="syntax-variable">kwargs</span>):</> },
-  { n: 19, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-variable">token</span> = <span className="syntax-function">request.headers.get</span>(<span className="syntax-string">'Authorization'</span>)</> },
+  { n: 19, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-variable">token</span> = <span className="syntax-function">request.headers.get</span>(<span className="syntax-string">&apos;Authorization&apos;</span>)</> },
   { n: 20, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-keyword">if</span> <span className="syntax-keyword">not</span> <span className="syntax-variable">token</span>:</> },
-  { n: 21, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-keyword">return</span> <span className="syntax-function">jsonify</span>(&#123;<span className="syntax-string">'error'</span>: <span className="syntax-string">'Unauthorized'</span>&#125;), <span className="syntax-number">401</span></> },
+  { n: 21, code: <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="syntax-keyword">return</span> <span className="syntax-function">jsonify</span>(&#123;<span className="syntax-string">&apos;error&apos;</span>: <span className="syntax-string">&apos;Unauthorized&apos;</span>&#125;), <span className="syntax-number">401</span></> },
 ]
 
 const langColors: Record<string, string> = {
@@ -54,8 +54,7 @@ const langColors: Record<string, string> = {
 
 export default function CodeExplorer() {
   const [activeFile, setActiveFile] = useState('auth.py')
-  const [question] = useState('Where is authentication handled?')
-  const [showAnswer, setShowAnswer] = useState(true)
+  const question = 'Where is authentication handled?'
 
   return (
     <section id="explorer" style={{ padding: '96px 0', position: 'relative', overflow: 'hidden' }}>
