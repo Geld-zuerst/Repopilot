@@ -91,13 +91,14 @@ class UserSerializer(serializers.ModelSerializer):
     followers_count = serializers.IntegerField(read_only=True)
     following_count = serializers.IntegerField(read_only=True)
     avatar_url = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
             'id', 'username', 'email', 'bio', 'avatar_url',
             'github_url', 'website', 'skills',
-            'followers_count', 'following_count', 'created_at',
+            'followers_count', 'following_count', 'is_following', 'created_at',
         ]
         read_only_fields = ['id', 'created_at', 'followers_count', 'following_count']
 
@@ -106,6 +107,12 @@ class UserSerializer(serializers.ModelSerializer):
         if obj.avatar and request:
             return request.build_absolute_uri(obj.avatar.url)
         return None
+
+    def get_is_following(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return request.user.following.filter(pk=obj.pk).exists()
+        return False
 
 
 class UserDetailSerializer(serializers.ModelSerializer):

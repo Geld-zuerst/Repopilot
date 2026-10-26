@@ -1,10 +1,10 @@
 <p align="center">
   <h1 align="center">🧭 RepoPilot</h1>
   <p align="center">
-    <strong>Understand Any Codebase. Navigate Every Line.</strong>
+    <strong>Understand a GitHub Repository Before You Dive In.</strong>
   </p>
   <p align="center">
-    An AI-powered codebase intelligence platform that provides <em>evidence-backed, citation-verified</em> answers grounded in real source files — never hallucinated.
+    Paste a public GitHub URL to explore repository structure, languages, documentation, dependencies, contributors, releases, and recent activity.
   </p>
   <p align="center">
     <a href="#-features">Features</a> •
@@ -20,13 +20,16 @@
 
 ## 📖 About
 
-**RepoPilot** is a full-stack web application designed to solve one of the biggest challenges developers face: **understanding unfamiliar or complex codebases**. Whether you're onboarding to a new team, inheriting legacy code, or contributing to open-source, RepoPilot gives you the tools to navigate and understand any repository with confidence.
+**RepoPilot** helps developers evaluate public GitHub repositories before they clone, adopt, or contribute to them. Paste a repository URL to get its README, language breakdown, source tree and file previews, supported package dependencies, recent commits, contributors, releases, and project statistics in one view.
 
 ### What makes RepoPilot different?
 
-- 🔍 **Evidence-First Answers** — Every AI explanation is anchored to exact source files and line ranges that you can inspect directly in the built-in code viewer. No hallucinations, no made-up function names.
-- 🔒 **Local-First & Privacy-Safe** — Repository code stays strictly local. Supports local AI models (via Ollama) or controlled cloud integrations, ensuring zero code leaks.
-- 🛡️ **Read-Only & Secure** — Operates in read-only mode. Automatically prunes secrets (`.env`, `.pem`, `.key`), binaries, and dependency folders. Never executes repository code.
+- 🌳 **Repository Overview** — See stars, forks, issues, license, size, default branch, topics, language usage, and top-level structure.
+- 📄 **File Browser & README** — Search a repository’s public file tree and preview individual text files on demand.
+- 📦 **Dependency Discovery** — Read dependencies from `package.json`, `requirements.txt`, `pyproject.toml`, `Cargo.toml`, and `go.mod`.
+- 📈 **Maintenance Signals** — Review recent commits, top contributors, releases, and last-push date.
+- 🔒 **Read-Only** — RepoPilot does not clone, modify, or store the repository contents.
+- 👥 **Optional Community** — Accounts, project listings, developer profiles, and community posts are also available.
 
 ---
 
@@ -34,14 +37,11 @@
 
 | Feature | Description |
 |---|---|
-| 🤖 **AI-Powered Code Investigation** | Ask questions about any codebase and receive evidence-backed answers with verified file & line citations |
-| 🌳 **Interactive File Tree Browser** | Browse the full directory structure of any repository |
-| 📄 **Syntax-Highlighted Code Viewer** | View file contents with syntax highlighting and line numbers |
-| 🎯 **Citation Verification** | Every AI claim links to exact `file:line_start–line_end` ranges you can verify |
-| 🌐 **3D Repository Visualization** | Stunning Three.js 3D scene with rotating glass cube, orbiting file nodes, and particle fields |
-| 👥 **Developer Community** | Social feed with posts, comments, likes, and follow system |
-| 📂 **Project Registry** | Track and catalog repositories with metadata, languages, GitHub stats, and tags |
-| 🔐 **JWT Authentication** | Secure email-based auth with access/refresh token rotation and blacklisting |
+| 🌳 **Repository analysis** | Paste a public GitHub URL to inspect repository metadata, source tree, languages, and documentation |
+| 📦 **Dependencies** | Extract declared dependencies from common JavaScript, Python, Rust, and Go manifests |
+| 📈 **Project activity** | Explore recent commits, contributors, releases, stars, forks, and open issues |
+| 🧾 **Source previews** | Search repository paths and preview text files directly from GitHub |
+| 👥 **Optional community** | JWT accounts, project listings, developer profiles, posts, likes, and comments |
 | 🎨 **Cyberpunk UI Design** | Premium dark theme with glassmorphism, neon accents, and Framer Motion animations |
 
 ---
@@ -77,11 +77,7 @@
 |---|---|
 | **SQLite** | Lightweight relational database (via Django ORM) |
 
-### AI Engine (Target Architecture)
-| Technology | Purpose |
-|---|---|
-| [Ollama](https://ollama.com/) | Local-first AI model runtime (Llama 3, Mistral, Qwen) |
-| [Google Gemini 2.0 Flash](https://ai.google.dev/) | Cloud AI integration (optional) |
+Repository analysis uses GitHub's public REST API. AI-generated code explanations and private-repository access are not implemented.
 
 ---
 
@@ -92,13 +88,13 @@
 │                   Frontend (Next.js 16 + React 19)              │
 │                                                                 │
 │  ┌───────────┐  ┌──────────────┐  ┌───────────┐  ┌──────────┐  │
-│  │  Landing   │  │ 3D Repo Scene│  │   Code    │  │ Community│  │
-│  │  Page +    │  │  (Three.js)  │  │ Explorer  │  │   Feed   │  │
-│  │  Navbar    │  │  Glass Cube  │  │ + AI Chat │  │  Posts   │  │
+│  │  Landing   │  │ Repository   │  │ File Tree │  │ Optional │  │
+│  │  Page +    │  │  Dashboard   │  │ + Preview │  │ Community│  │
+│  │ Repo URL   │  │  Overview    │  │ README    │  │  Posts   │  │
 │  └───────────┘  └──────────────┘  └───────────┘  └──────────┘  │
 │                           │                                     │
 └───────────────────────────┼─────────────────────────────────────┘
-                            │ REST API (Axios)
+                            │ GitHub public REST API
 ┌───────────────────────────┼─────────────────────────────────────┐
 │                  Backend (Django REST Framework)                 │
 │                            │                                    │
@@ -119,16 +115,10 @@
                      └──────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
-│              AI Investigation Engine (Target Arch)               │
+│                Public repository information                     │
 │                                                                 │
-│  Repository ──► Scanner ──► Indexer ──► Search ──► AI Model     │
-│  (read-only)   (safe       (file &     (keyword   (Ollama /     │
-│                traversal)   line index)  search)   Gemini)       │
-│                                            │                    │
-│                                     ┌──────┴───────┐            │
-│                                     │   Citation   │            │
-│                                     │  Validator   │            │
-│                                     └──────────────┘            │
+│  Metadata ── Languages ── Tree ── README ── Activity/Manifests  │
+│             File previews are requested only when opened         │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -176,8 +166,8 @@
 
 ### Prerequisites
 
-- **Node.js** v18 or higher
-- **Python** 3.9 or higher (3.11 recommended)
+- **Node.js** v20.9 or higher
+- **Python** 3.12 recommended for the pinned backend dependencies
 - **npm** or **yarn**
 - **Git**
 
@@ -190,54 +180,30 @@ cd Repopilot
 
 ### 2. Backend Setup (Django API)
 
-```bash
-# Navigate to backend
+```powershell
+# From the repository root. Python 3.12 is recommended for the pinned dependencies.
 cd backend
-
-# Create and activate virtual environment
-python -m venv venv
-
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Create environment file (see Environment Variables section)
-# Add your SECRET_KEY and other settings to backend/.env
-
-# Run database migrations
-python manage.py makemigrations accounts projects community
+py -3.12 -m venv .venv312
+.\.venv312\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 python manage.py migrate
-
-# (Optional) Create admin superuser
-python manage.py createsuperuser
-
-# Start the Django development server
 python manage.py runserver 8000
 ```
 
-Backend API will be running at `http://localhost:8000`.
+The optional Django API is available at `http://localhost:8000`.
 
 ### 3. Frontend Setup (Next.js)
 
-```bash
+```powershell
 # Navigate to frontend (from project root)
 cd frontend
-
-# Install dependencies
 npm install
-
-# Create environment file (see Environment Variables section)
-# Add NEXT_PUBLIC_API_URL and other settings to frontend/.env.local
-
-# Start the Next.js development server
 npm run dev
 ```
 
 Frontend will be running at `http://localhost:3000`.
+
+Repository analysis works directly with GitHub's public API and does not require the optional Django server. GitHub's unauthenticated API rate limit applies.
 
 ---
 
@@ -247,11 +213,11 @@ Frontend will be running at `http://localhost:3000`.
 
 | Variable | Required | Description |
 |---|:---:|---|
-| `NEXT_PUBLIC_API_URL` | ✅ | URL of the Django backend (e.g., `http://localhost:8000`) |
-| `GITHUB_ID` | ⬜ | GitHub OAuth App Client ID (if using GitHub OAuth) |
-| `GITHUB_SECRET` | ⬜ | GitHub OAuth App Client Secret |
-| `NEXTAUTH_SECRET` | ⬜ | Random secret for session encryption (`openssl rand -base64 32`) |
-| `NEXTAUTH_URL` | ⬜ | Canonical URL of the site (e.g., `http://localhost:3000`) |
+| `NEXT_PUBLIC_API_URL` | ⬜ | URL of the Django backend; defaults to `http://localhost:8000` |
+| `GITHUB_ID` | ⬜ | Not required for public repository analysis |
+| `GITHUB_SECRET` | ⬜ | Not required for public repository analysis |
+| `NEXTAUTH_SECRET` | ⬜ | Not used by the current authentication flow |
+| `NEXTAUTH_URL` | ⬜ | Not used by the current authentication flow |
 
 ### Backend — `backend/.env`
 
@@ -260,8 +226,8 @@ Frontend will be running at `http://localhost:3000`.
 | `SECRET_KEY` | ✅ | Django secret key for cryptographic signing |
 | `DEBUG` | ✅ | Set to `True` for development, `False` for production |
 | `ALLOWED_HOSTS` | ✅ | Comma-separated list (e.g., `localhost,127.0.0.1`) |
-| `GEMINI_API_KEY` | ⬜ | Google Gemini API Key (if using cloud AI) |
-| `OLLAMA_BASE_URL` | ⬜ | Ollama API URL (defaults to `http://localhost:11434`) |
+| `GEMINI_API_KEY` | ⬜ | Reserved for a future AI integration |
+| `OLLAMA_BASE_URL` | ⬜ | Reserved for a future local AI integration |
 
 ---
 
@@ -272,18 +238,31 @@ Repopilot/
 │
 ├── frontend/                        # Next.js 16 + React 19 Frontend
 │   ├── app/                         # App Router
-│   │   ├── layout.tsx               # Root layout, SEO metadata, OpenGraph tags
-│   │   ├── page.tsx                 # Landing page (Navbar, Hero, CodeExplorer, Features)
-│   │   └── globals.css              # Design system — CSS tokens, neon theme, animations
+│   │   ├── layout.tsx               # Root layout, SEO metadata, session provider
+│   │   ├── page.tsx                 # Repository-analyzer landing page
+│   │   ├── analyze/                 # GitHub repository overview, file browser, dependencies
+│   │   ├── login/ and register/     # JWT account flows
+│   │   ├── projects/                # Project directory and project detail/CRUD
+│   │   ├── community/               # Posts, likes, comments, and feed
+│   │   ├── users/                   # Developer directory and public profiles
+│   │   ├── profile/                 # Edit your developer profile
+│   │   └── globals.css              # Design system and responsive app styles
 │   ├── components/
 │   │   ├── hero/
 │   │   │   ├── HeroSection.tsx      # Hero CTA with staggered animations & 3D scene
 │   │   │   └── RepoScene.tsx        # Three.js 3D canvas — glass cube, orbiting nodes, particles
+│   │   ├── repository/
+│   │   │   └── RepositoryAnalyzer.tsx # GitHub repo dashboard and detail tabs
 │   │   ├── layout/
-│   │   │   └── Navbar.tsx           # Glassmorphism sticky nav with ⌘K search
+│   │   │   ├── AppHeader.tsx        # Workspace navigation and session controls
+│   │   │   ├── Navbar.tsx           # Landing page navigation
+│   │   │   └── PageShell.tsx        # Shared workspace page layout
 │   │   └── sections/
-│   │       ├── CodeExplorer.tsx     # Mock IDE — file tree, code viewer, AI investigation panel
+│   │       ├── CodeExplorer.tsx     # Repository analyzer feature overview
 │   │       └── Features.tsx         # 4 interactive feature cards with custom SVG visuals
+│   ├── lib/
+│   │   ├── api.ts                   # Typed API requests and JWT refresh handling
+│   │   └── github.ts                # Public GitHub API, source tree, manifests, and file reads
 │   ├── public/                      # Static assets
 │   ├── package.json                 # Dependencies
 │   ├── tsconfig.json                # TypeScript config
@@ -334,33 +313,29 @@ RepoPilot features a **cyberpunk-inspired dark theme** with a carefully crafted 
 - **3D Graphics:** Interactive Three.js scene with frosted glass cube, `MeshTransmissionMaterial` with chromatic aberration, orbiting file nodes, connection lines, and 80-point particle fields
 - **Glassmorphism:** Frosted glass effects throughout the UI — navbar, cards, panels
 - **Animations:** Staggered Framer Motion entrances, scroll-triggered reveals, hover effects
-- **Code Explorer:** Three-panel mock IDE showcasing the AI investigation workflow with tree view, line-numbered code viewer, and evidence-backed AI response panel
+- **Repository analyzer:** GitHub URL input, repository overview, file tree and previews, README, languages, dependencies, contributors, releases, and commits
 
 ---
 
 ## 🔒 Security Design
 
-RepoPilot takes a **security-first approach** to code analysis:
+Repository analysis is currently read-only and uses the public GitHub API:
 
 | Principle | Implementation |
 |---|---|
-| **Read-Only** | Never modifies or executes repository code |
-| **Secret Pruning** | Automatically excludes `.env`, `.pem`, `.key`, and credential files |
-| **Path Sandboxing** | Traversal cannot follow symlinks outside the repository root |
-| **Prompt Injection Resistance** | Repository comments/docs are treated as untrusted input, never as prompt instructions |
-| **Local-First AI** | Supports Ollama for fully local model inference — zero code leaves your machine |
+| **Read-Only** | Does not clone, modify, or execute repository code |
+| **Public Repositories** | Private repositories are not supported |
+| **On-Demand Previews** | Text file contents are fetched from GitHub only when a user opens a file; preview files are limited to 250 KB |
+| **No Repository Storage** | Repository data is held in page state and is not saved to the app database |
 
 ---
 
 ## 📝 How It Works
 
-1. **Sign Up / Sign In** — Create an account with email-based JWT authentication
-2. **Browse Projects** — Explore the project registry or add your own repositories
-3. **Select a Repo** — Pick a repository to investigate
-4. **Scan & Index** — RepoPilot safely scans the file tree and builds a lightweight index
-5. **Ask Questions** — Query the AI about the codebase in natural language
-6. **Get Verified Answers** — Receive evidence-backed explanations with exact file & line citations
-7. **Engage the Community** — Share insights, discuss findings, and follow other developers
+1. **Paste a GitHub URL** — Enter a link to a public repository.
+2. **Load its overview** — RepoPilot reads repository metadata, languages, README, and the default-branch tree.
+3. **Inspect the project** — Review dependency manifests, recent commits, top contributors, and releases.
+4. **Browse source** — Search file paths and open individual text files from GitHub on demand.
 
 ---
 

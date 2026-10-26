@@ -1,43 +1,44 @@
 'use client'
 import { motion } from 'framer-motion'
-import { Brain, FileCheck, Shield, Bug, ArrowRight } from 'lucide-react'
+import { Code2, FileText, Package, Activity, ArrowRight, FileCheck } from 'lucide-react'
+import Link from 'next/link'
 
 const features = [
   {
-    icon: <Brain size={24} />,
-    title: 'Codebase Intelligence',
-    description: 'Understand the architecture of an unfamiliar repository in minutes. RepoPilot builds a navigable map of your modules, imports, and dependencies.',
+    icon: <Code2 size={24} />,
+    title: 'Understand the codebase',
+    description: 'See repository languages, default branch, directory structure, file counts, and a searchable tree of source files.',
     color: '#8B5CF6',
     bgColor: 'rgba(139,92,246,0.1)',
     illustration: <CodebaseIllustration />,
-    tag: 'Architecture',
+    tag: 'Structure',
   },
   {
-    icon: <FileCheck size={24} />,
-    title: 'Evidence-Backed Answers',
-    description: 'Every explanation points to the exact code that supports it. No hallucinations — only answers grounded in your actual source files.',
+    icon: <FileText size={24} />,
+    title: 'Read project documentation',
+    description: 'Keep the repository description and README close by, then open individual source files directly in the file browser.',
     color: '#22D3EE',
     bgColor: 'rgba(34,211,238,0.08)',
     illustration: <EvidenceIllustration />,
-    tag: 'Accuracy',
+    tag: 'Documentation',
   },
   {
-    icon: <Shield size={24} />,
-    title: 'Local-First AI',
-    description: 'Investigate private code using a compatible local model. Your repository never leaves your machine — not even a single line.',
+    icon: <Package size={24} />,
+    title: 'Check dependencies',
+    description: 'See declared packages from common npm, Python, Cargo, and Go manifests with their versions and source files.',
     color: '#34D399',
     bgColor: 'rgba(52,211,153,0.08)',
     illustration: <LocalIllustration />,
-    tag: 'Privacy',
+    tag: 'Packages',
   },
   {
-    icon: <Bug size={24} />,
-    title: 'Smart Bug Investigation',
-    description: 'Follow relevant functions and dependencies to investigate issues faster. Trace the path of a bug across modules with evidence at every step.',
+    icon: <Activity size={24} />,
+    title: 'Assess project activity',
+    description: 'Review recent commits, contributors, published releases, repository size, stars, forks, and open issues.',
     color: '#F59E0B',
     bgColor: 'rgba(245,158,11,0.08)',
-    illustration: <BugIllustration />,
-    tag: 'Debugging',
+    illustration: <ActivityIllustration />,
+    tag: 'Activity',
   },
 ]
 
@@ -73,59 +74,34 @@ function CodebaseIllustration() {
 
 function EvidenceIllustration() {
   return (
-    <div style={{ padding: '8px 0' }}>
-      <div style={{
-        background: 'rgba(7,8,15,0.8)',
-        border: '1px solid rgba(34,211,238,0.2)',
-        borderRadius: 8,
-        padding: '10px 12px',
-        marginBottom: 8,
-        fontFamily: 'JetBrains Mono',
-        fontSize: '0.72rem',
-      }}>
-        <div style={{ color: '#67E8F9', marginBottom: 4 }}>def authenticate(token):</div>
-        <div style={{ color: '#94A3B8', paddingLeft: 12 }}><span style={{ color: '#C084FC' }}>return</span> jwt.decode(token)</div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.2)', borderRadius: 6, padding: '6px 10px' }}>
-        <FileCheck size={11} color="#22D3EE" />
-        <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.68rem', color: '#22D3EE' }}>src/auth.py:24–31</span>
-        <span style={{ marginLeft: 'auto', fontSize: '0.62rem', color: '#34D399' }}>✓ verified</span>
-      </div>
+    <div style={{ display: 'grid', gap: 8, padding: '10px 0', fontFamily: 'JetBrains Mono', fontSize: '0.72rem' }}>
+      {['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md'].map((file, index) => (
+        <div key={file} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 10px', border: '1px solid rgba(34,211,238,0.15)', borderRadius: 7, background: 'rgba(7,8,15,0.65)', color: index === 0 ? '#67E8F9' : '#94A3B8' }}>
+          <FileCheck size={13} color="#22D3EE" />{file}<span style={{ marginLeft: 'auto', color: '#64748B' }}>{index === 0 ? 'default branch' : 'when available'}</span>
+        </div>
+      ))}
     </div>
   )
 }
 
 function LocalIllustration() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0' }}>
-      <div style={{ position: 'relative' }}>
-        {/* Shield rings */}
-        {[60, 48, 36].map((r, i) => (
-          <div key={i} style={{
-            position: 'absolute',
-            width: r * 2, height: r * 2,
-            borderRadius: '50%',
-            border: `1px solid rgba(52,211,153,${0.1 + i * 0.08})`,
-            top: 80 - r, left: 80 - r,
-          }} />
-        ))}
-        <div style={{ width: 160, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Shield size={40} color="#34D399" opacity={0.9} />
-          </div>
-          <div style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)' }}>
-            <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: '#34D399', whiteSpace: 'nowrap' }}>
-              LOCAL · PRIVATE · SAFE
-            </span>
-          </div>
+    <div style={{ display: 'grid', gap: 8, padding: '8px 0', fontFamily: 'JetBrains Mono', fontSize: '0.72rem' }}>
+      {[
+        ['package.json', 'npm'],
+        ['requirements.txt', 'PyPI'],
+        ['Cargo.toml', 'Cargo'],
+      ].map(([file, ecosystem]) => (
+        <div key={file} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 10px', border: '1px solid rgba(52,211,153,0.16)', borderRadius: 7, background: 'rgba(7,8,15,0.65)' }}>
+          <Package size={14} color="#34D399" /><span style={{ color: '#CBD5E1' }}>{file}</span><span style={{ marginLeft: 'auto', color: '#34D399' }}>{ecosystem}</span>
         </div>
-      </div>
+      ))}
     </div>
   )
 }
 
-function BugIllustration() {
-  const steps = ['app.py', 'routes.py', 'auth.py', 'db.py']
+function ActivityIllustration() {
+  const steps = ['Recent commits', 'Contributors', 'Releases']
   return (
     <div style={{ padding: '8px 0' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -148,7 +124,7 @@ function BugIllustration() {
                 {step}
               </span>
               {i === 2 && (
-                <span style={{ marginLeft: 'auto', fontSize: '0.6rem', color: '#F59E0B', fontFamily: 'JetBrains Mono' }}>← BUG</span>
+                <span style={{ marginLeft: 'auto', fontSize: '0.6rem', color: '#F59E0B', fontFamily: 'JetBrains Mono' }}>← LATEST</span>
               )}
             </div>
           </div>
@@ -172,11 +148,11 @@ export default function Features() {
         >
           <div className="section-label" style={{ justifyContent: 'center' }}>02 — FEATURES</div>
           <h2 style={{ marginBottom: 16 }}>
-            Intelligence Without<br />
-            <span className="gradient-text">Compromise</span>
+            Get the context<br />
+            <span className="gradient-text">before you contribute.</span>
           </h2>
           <p style={{ maxWidth: 500, margin: '0 auto', fontSize: '1.125rem' }}>
-            Every feature is designed to give you depth and precision — never vague summaries or hallucinated paths.
+            Quickly evaluate what a repository does, what it uses, how it’s organized, and how actively it’s maintained.
           </p>
         </motion.div>
 
@@ -245,10 +221,10 @@ export default function Features() {
                 {feature.description}
               </p>
 
-              <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6, color: feature.color, cursor: 'pointer' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Learn more</span>
+              <Link href="/analyze" style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6, color: feature.color, textDecoration: 'none' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Analyze a repository</span>
                 <ArrowRight size={14} />
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>

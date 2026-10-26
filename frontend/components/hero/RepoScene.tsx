@@ -223,17 +223,17 @@ export default function RepoScene() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22D3EE', boxShadow: '0 0 8px #22D3EE' }} />
-          <span style={{ fontSize: '0.7rem', fontFamily: 'JetBrains Mono', color: '#22D3EE', fontWeight: 600 }}>LIVE ANALYSIS</span>
+          <span style={{ fontSize: '0.7rem', fontFamily: 'JetBrains Mono', color: '#22D3EE', fontWeight: 600 }}>REPOSITORY SNAPSHOT</span>
         </div>
         <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: 8, lineHeight: 1.5 }}>
-          &quot;Where is authentication handled?&quot;
+          &quot;What does this repository use?&quot;
         </p>
         <div style={{ fontSize: '0.72rem', fontFamily: 'JetBrains Mono', color: '#8B5CF6', background: 'rgba(139,92,246,0.1)', borderRadius: 6, padding: '4px 8px' }}>
-          → src/auth.py:24–46
+          → Languages · Dependencies
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#34D399' }} />
-          <span style={{ fontSize: '0.68rem', color: '#34D399', fontFamily: 'JetBrains Mono' }}>Evidence verified</span>
+          <span style={{ fontSize: '0.68rem', color: '#34D399', fontFamily: 'JetBrains Mono' }}>README · Activity · Files</span>
         </div>
       </div>
     </div>

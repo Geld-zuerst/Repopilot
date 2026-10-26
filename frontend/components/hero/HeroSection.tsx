@@ -1,6 +1,9 @@
 'use client'
 import { motion } from 'framer-motion'
 import { ArrowRight, Shield, Zap, Lock } from 'lucide-react'
+import Link from 'next/link'
+import { FormEvent, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 function GitHubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -38,6 +41,21 @@ const fadeUp = {
 }
 
 export default function HeroSection() {
+  const [repositoryUrl, setRepositoryUrl] = useState('')
+  const [error, setError] = useState('')
+  const router = useRouter()
+
+  function analyzeRepository(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const value = repositoryUrl.trim()
+    if (!value) {
+      setError('Paste a public GitHub repository URL to get started.')
+      return
+    }
+    setError('')
+    router.push(`/analyze?repo=${encodeURIComponent(value)}`)
+  }
+
   return (
     <section
       id="product"
@@ -90,7 +108,7 @@ export default function HeroSection() {
           >
             <span className="badge badge-violet" style={{ padding: '6px 16px' }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#A78BFA', display: 'inline-block', marginRight: 4 }} />
-              OPEN-SOURCE AI • LOCAL-FIRST
+              PUBLIC GITHUB REPOSITORY ANALYZER
             </span>
           </motion.div>
 
@@ -102,12 +120,12 @@ export default function HeroSection() {
             animate="visible"
             style={{ marginBottom: 24, lineHeight: 1.1 }}
           >
-            Your Codebase<br />Has a Story.{' '}
+            Understand any<br />repository.{' '}
             <span
               className="gradient-text"
               style={{ display: 'inline-block' }}
             >
-              Let&apos;s Uncover It.
+              Before you dive in.
             </span>
           </motion.h1>
 
@@ -125,10 +143,36 @@ export default function HeroSection() {
               maxWidth: 500,
             }}
           >
-            RepoPilot maps repositories, traces code relationships, and answers your
-            developer questions with verifiable source citations — using a local AI
-            model that never sends your code to the cloud.
+            Paste a GitHub link to explore the project details developers need:
+            languages, source tree, README, dependencies, contributors, releases,
+            and recent commits.
           </motion.p>
+
+          <motion.form
+            custom={0.27}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            onSubmit={analyzeRepository}
+            className="repo-hero-form"
+          >
+            <div className="repo-hero-input">
+              <GitHubIcon size={18} />
+              <input
+                aria-label="Public GitHub repository URL"
+                type="text"
+                inputMode="url"
+                placeholder="https://github.com/owner/repository"
+                value={repositoryUrl}
+                onChange={(event) => setRepositoryUrl(event.target.value)}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary btn-lg">
+              Analyze repository <ArrowRight size={18} />
+            </button>
+            {error && <span role="alert" className="rp-error">{error}</span>}
+          </motion.form>
+          <p className="rp-hero-hint">Public GitHub repositories · Read-only · No clone required</p>
 
           {/* CTAs */}
           <motion.div
@@ -138,17 +182,17 @@ export default function HeroSection() {
             animate="visible"
             style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 36 }}
           >
-            <a
-              href="#get-started"
+            <Link
+              href="#how-it-works"
               id="explore-repopilot-btn"
               className="btn btn-primary btn-lg"
               style={{ boxShadow: '0 0 30px rgba(139,92,246,0.45)' }}
             >
-              Explore RepoPilot
+              See how it works
               <ArrowRight size={18} />
-            </a>
+            </Link>
             <a
-              href="https://github.com"
+              href="https://github.com/Geld-zuerst/Repopilot"
               target="_blank"
               rel="noopener noreferrer"
               id="view-github-btn"
@@ -168,9 +212,9 @@ export default function HeroSection() {
             style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}
           >
             {[
-              { icon: <Shield size={14} />, text: 'Open-source intelligence' },
-              { icon: <Lock size={14} />, text: 'Your code stays yours' },
-              { icon: <Zap size={14} />, text: 'No API key required' },
+              { icon: <Shield size={14} />, text: 'Public repo data' },
+              { icon: <Lock size={14} />, text: 'Read-only analysis' },
+              { icon: <Zap size={14} />, text: 'No clone needed' },
             ].map(({ icon, text }) => (
               <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ color: '#22D3EE' }}>{icon}</span>

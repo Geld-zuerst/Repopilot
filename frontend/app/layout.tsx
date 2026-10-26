@@ -1,30 +1,31 @@
 import type { Metadata } from 'next'
+import { AuthProvider } from './providers'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'RepoPilot — Understand Any Codebase. Navigate Every Line.',
+  title: 'RepoPilot — Understand a GitHub Repository Before You Dive In',
   description:
-    'RepoPilot is an AI-powered codebase intelligence platform that helps developers understand unfamiliar repositories, investigate bugs, and generate evidence-backed code explanations — privately, with open-source AI.',
+    'Paste a public GitHub repository URL to explore its README, languages, source tree, dependencies, contributors, releases, and recent commits.',
   keywords: [
-    'codebase intelligence', 'AI code explorer', 'repository analysis',
-    'developer tools', 'open-source AI', 'local-first', 'code investigation',
+    'GitHub repository analyzer', 'repository overview', 'dependency analysis',
+    'source tree', 'repository activity', 'developer tools',
   ],
   openGraph: {
-    title: 'RepoPilot — Understand Any Codebase',
-    description: 'Your AI copilot for exploring, understanding, and mastering codebases.',
+    title: 'RepoPilot — GitHub Repository Overview',
+    description: 'Explore repository structure, dependencies, documentation, and activity from one link.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RepoPilot — Codebase Intelligence',
-    description: 'Explore, understand, and master any codebase with AI-powered evidence trails.',
+    title: 'RepoPilot — Repository Intelligence',
+    description: 'Get a practical overview of any public GitHub repository.',
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body><AuthProvider>{children}</AuthProvider></body>
     </html>
   )
 }
